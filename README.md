@@ -43,6 +43,11 @@ Edit near the top of the script: `path` (project directory), `recfile_name`,
 `binding_site_name` (must be a key in `BINDING_SITES`, or add a new one),
 `script_path`/`vina_path`/`python_path` for your environment.
 
+### Example
+
+`example/` has a minimal runnable example (a small public-domain receptor
+and a few simple SMILES) with its own walkthrough at `example/README.md`.
+
 ## Other scripts
 
 - **`parallel_autodock_vs.py`** — a separate pipeline using **AutoDock4**
