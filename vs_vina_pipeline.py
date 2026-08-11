@@ -21,23 +21,18 @@ from utilities.vina_results import extraction, is_number, makefile
 HPC = False
 
 # ---- Binding site definitions: size (x, y, z) and center (x, y, z) ----
-# Pymol: zoom; print cmd.get_position()
+# To add your own: open the receptor in Pymol, select/zoom to the pocket,
+# then `print cmd.get_position()` to read off a center. See example/README.md
+# for a walkthrough of computing one directly from a bound ligand's coordinates.
 BINDING_SITES = {
-    "blind": {"size": (37, 40, 32), "center": (20.5, 31, 23.5)},
-    "HM": {"size": (22, 22, 20), "center": (14, 24.3, 28)},
-    "M1": {"size": (22, 22, 22), "center": (26, 21.8, 28.6)},
-    "M4": {"size": (22, 22, 22), "center": (13.9, 29.8, 17.5)},  # use the structure with NADPH, kind of optional
-    "NADPH": {"size": (19, 29, 20), "center": (15, 39, 24)},  # use the structure without NADPH
-    "non_competitive_1_ligandsTc": {"size": (28, 20, 20), "center": (3, 23, 13)},  # use the structure without NADPH
-    "competitive_3": {"size": (30, 27, 28), "center": (15, 23, 27)},  # use the structure without NADPH
-    "Dimer": {"size": (19, 29, 20), "center": (40, 13, 24)},  # use the structure without NADPH
+    "example": {"size": (20, 20, 20), "center": (13, 22, 6)},  # see example/README.md
 }
 
 if HPC:
-    script_path = "/home/shamsara/.conda/envs/vina/MGLToolsPckgs/AutoDockTools/Utilities24/"  # path for prepare_receptor4.py and prepare_ligand4.py
+    script_path = ""  # path for prepare_receptor4.py and prepare_ligand4.py, e.g. ".../MGLToolsPckgs/AutoDockTools/Utilities24/" - see README.md
     vina_path = ''  # Vina executable path
     python_path = ""  # python executable path if it is in the path it should be empty ""
-    path = "/home/jamal/Dokumente/Projects/G6PD/My_files/30_docking2/Run_tldr/"  #################### Working directory path; It should include following subdirectories: ligands (put ligand  files here) AND receptor (put receptor file here) conf file will be created by the script
+    path = "example/"  #################### Working directory path; It should include following subdirectories: ligands (put ligand  files here) AND receptor (put receptor file here) conf file will be created by the script
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("start", type=int, help="first ligand index in this job's slice (inclusive)")
@@ -46,28 +41,23 @@ if HPC:
     checkpoint_start = args.start
     checkpoint_end = args.end
 else:
-    script_path = "/home/jamal/anaconda3/envs/vina/lib/python2.7/site-packages/AutoDockTools/Utilities24/"  # path for prepare_receptor4.py and prepare_ligand4.py
+    script_path = ""  # path for prepare_receptor4.py and prepare_ligand4.py, e.g. ".../MGLToolsPckgs/AutoDockTools/Utilities24/" - see README.md
     vina_path = ''  # Vina executable path
     python_path = ""  # python executable path if it is in the path it should be empty ""
-    path = "/home/jamal/Dokumente/Projects/G6PD/My_files/32_docking_ex64_AC_TC/2_Run_tldr/"  #################### Working directory path; It should include following subdirectories: ligands (put ligand files here) AND receptor (put receptor file here) conf file will be created by the script
+    path = "example/"  #################### Working directory path; It should include following subdirectories: ligands (put ligand files here) AND receptor (put receptor file here) conf file will be created by the script
 
     checkpoint_start = 1  # =1 to start from the first molecule
     checkpoint_end = None  # no upper bound: run to the end of the ligand list
 
 
-#recfile_name= "Hu_G6PD.pdb"#Name of the receptor file
-#recfile_name= "Ld_G6PD.pdb"#Name of the receptor file
-#recfile_name= "Ld_G6PD_7sni_A.pdb"#Name of the receptor file
-#recfile_name= "Tc_G6PD.pdb"#Name of the receptor file
-recfile_name = "Sm_G6PD.pdb"  # Name of the receptor file
+recfile_name = "1hsg_protein.pdb"  # Name of the receptor file
 
 # both extensions will be checked
 ligands_ext = "mol2"  # extension of the ligand files; mol2 or pdb
 ligands_ext2 = 'pdb'
 ligands_ext3 = 'csv'  # parentheses in the id are not tolerated!
 
-#BS=path+"non_competitive_1"
-binding_site_name = "Dimer"
+binding_site_name = "example"
 BS = path + binding_site_name
 
 try:

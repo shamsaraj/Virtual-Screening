@@ -39,14 +39,17 @@ Set `HPC = True`/`False` near the top of the script.
 
 ### Configuration
 
-Edit near the top of the script: `path` (project directory), `recfile_name`,
-`binding_site_name` (must be a key in `BINDING_SITES`, or add a new one),
-`script_path`/`vina_path`/`python_path` for your environment.
+The script ships configured for the example below by default. For your
+own project, edit near the top of the script: `path` (project directory),
+`recfile_name`, `binding_site_name` (must be a key in `BINDING_SITES`, or
+add a new one), `script_path`/`vina_path`/`python_path` for your
+environment.
 
 ### Example
 
 `example/` has a minimal runnable example (a small public-domain receptor
-and a few simple SMILES) with its own walkthrough at `example/README.md`.
+and a few simple SMILES) that the script points at out of the box — see
+`example/README.md` for the walkthrough.
 
 ## Other scripts
 

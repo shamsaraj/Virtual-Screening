@@ -31,30 +31,27 @@ where to get each one and exactly what to set `script_path`/`vina_path`/
 
 ## Running it
 
-`vs_vina_pipeline.py`'s config (path, receptor name, binding site) is
-hardcoded at the top of the script rather than passed as arguments, so to
-try this example you'll need to **temporarily edit those lines**, then
-revert them before going back to your real project:
+`vs_vina_pipeline.py` now ships with this example as its default config
+(`path = "example/"`, `recfile_name = "1hsg_protein.pdb"`,
+`binding_site_name = "example"`), so after installing the prerequisites
+above and setting `script_path`/`vina_path`/`python_path` for your
+environment, just run it from the repo root:
 
-1. Set `path` to the absolute path of this `example/` folder (must end
-   with `/`).
-2. Set `recfile_name = "1hsg_protein.pdb"`.
-3. Add a temporary entry to `BINDING_SITES` and point `binding_site_name`
-   at it — the box below is centered on the native ligand's binding pocket
-   (computed directly from its coordinates in the original 1HSG structure,
-   with padding):
+```
+python vs_vina_pipeline.py
+```
 
-   ```python
-   BINDING_SITES["example"] = {"size": (20, 20, 20), "center": (13, 22, 6)}
-   ```
-   ```python
-   binding_site_name = "example"
-   ```
-4. Make sure `HPC = False`.
-5. Run: `python vs_vina_pipeline.py`
-
-This will prepare the receptor, convert the three SMILES to 3D ligands via
-OpenBabel, prepare them for Vina, dock each against the example binding
-site, and write results to `example/example_1hsg_protein/` (from
+This prepares the receptor, converts the three SMILES to 3D ligands via
+OpenBabel, prepares them for Vina, docks each against the example binding
+site, and writes results to `example/example_1hsg_protein/` (from
 `out_path = path + binding_site_name + "_" + recfile_name[:-4] + "/"`),
 including a `_results.csv` of docking energies.
+
+When you're ready to point it at your own project, edit `path`,
+`recfile_name`, and add your own entry to `BINDING_SITES`. To get a
+`center` for a new binding site: open the receptor in Pymol, select or
+zoom to the pocket, then run `print cmd.get_position()` to read off
+coordinates. The `example` entry above was instead computed directly from
+the bound ligand's atom coordinates in the original 1HSG structure — the
+geometric center and extent of the `HETATM`/`MK1` records, with padding
+added to the extent for the box `size`.
