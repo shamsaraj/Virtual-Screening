@@ -66,6 +66,10 @@ Edit near the top of the script: `path` (project directory), `recfile_name`,
   filename via `babel`.
 - **`zinc15script.py`** — bulk-extracts and converts a downloaded ZINC15
   tranche (`.gz` → `.pdbqt`), organizing outputs by ZINC ID.
+- **`set_vina_priority_high.bat`** / **`set_vina_priority_low.bat`** —
+  Windows only: set the running `vina.exe` process to high or idle CPU
+  priority (via `wmic ... setpriority`), to speed up docking or let it run
+  in the background without slowing down other programs.
 
 ## Requirements
 
