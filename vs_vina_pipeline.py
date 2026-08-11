@@ -52,10 +52,15 @@ else:
 
 recfile_name = "1hsg_protein.pdb"  # Name of the receptor file
 
-# both extensions will be checked
-ligands_ext = "mol2"  # extension of the ligand files; mol2 or pdb
+# Ligand input: either pre-built structure files (checked for both
+# ligands_ext and ligands_ext2) or a CSV of SMILES to generate structures
+# from (ligands_ext3) - see process_csv().
+ligands_ext = "mol2"
 ligands_ext2 = 'pdb'
-ligands_ext3 = 'csv'  # parentheses in the id are not tolerated!
+ligands_ext3 = 'csv'
+# mol_id becomes part of a filename that's interpolated unquoted into
+# obabel shell commands (see convert_smiles_to_mol2) - parentheses, spaces,
+# or other shell metacharacters in it will break or misinterpret the command.
 
 binding_site_name = "example"
 BS = path + binding_site_name
@@ -73,7 +78,7 @@ get_position = (center_x, center_y, center_z)
 out_path = BS + "_" + recfile_name[:-4] + "/"
 
 num_modes = 20  # number of output conformations per ligand
-exhaustiveness = str(64)
+exhaustiveness = str(64)  # Vina's number of independent search runs per ligand; higher = more thorough/slower (Vina's own default is 8)
 ##########################################Functions####################################################################
 
 
@@ -159,6 +164,13 @@ def process_csv(csv_file, phs=["ref"], checkpoint_start=1, checkpoint_end=None):
     requested pH, for rows checkpoint_start..checkpoint_end (exclusive of
     checkpoint_end; if None, processes through the end of the file). Row 1
     is assumed to be a header row and is always skipped.
+
+    phs controls which protonation states to generate: "ref" (pH 7.4)
+    always runs first; "high" (pH 9) and "low" (pH 5) are optional
+    alternates for exploring pH-dependent protonation/tautomer changes.
+    An alternate is only kept if it actually differs from the reference
+    (compared by canonical SMILES) - if obabel produces the same structure
+    at pH 9 or 5 as at 7.4, the redundant file is deleted.
     """
     input_folder = os.path.dirname(csv_file)
     effective_end = checkpoint_end if checkpoint_end is not None else count_rows(csv_file)
@@ -213,7 +225,6 @@ ligpath = path + "ligands/"
 recpath = path + "receptor/"
 recfile = recpath + recfile_name
 makemydir(out_path)
-pdb_out_path = out_path[:-1] + "_pdb/"
 sdf_out_path = out_path[:-1] + "_sdf/"
 sdf_first_out_path = out_path[:-1] + "_sdf_first/"
 csv_out = out_path[:-1] + "_resuts_csv/"
@@ -272,7 +283,10 @@ size_y = str(size_y)
 size_z = str(size_z)
 num_modes = str(num_modes)  # number of output conformations
 
-if HPC and os.path.exists(out_path[:-1] + "_conf.txt") and checkpoint_start <= 1:
+# In HPC mode, conf.txt is shared across all array tasks: only the first
+# chunk (re)creates it, later chunks just reuse the existing file rather
+# than racing to rewrite an identical copy of it concurrently.
+if HPC and os.path.exists(out_path[:-1] + "_conf.txt") and checkpoint_start > 1:
     pass
 else:
     makefile(
