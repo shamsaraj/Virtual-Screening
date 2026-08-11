@@ -208,7 +208,7 @@ def process_csv(csv_file, phs=["ref"], checkpoint_start=1, checkpoint_end=None):
 
 os.chdir(path)
 mol_id_list = []
-ligpath = path + "ligands_selected_3/"
+ligpath = path + "ligands/"
 # Receptor preparation
 recpath = path + "receptor/"
 recfile = recpath + recfile_name

@@ -18,7 +18,7 @@ installed) — please verify it works before relying on it.
   with the crystallographic ligand (MK1) and waters stripped out, leaving
   protein atoms only. 1HSG is the structure used in AutoDock Vina's own
   tutorial.
-- `ligands_selected_3/ligands.csv` — three simple, well-known small
+- `ligands/ligands.csv` — three simple, well-known small
   molecules (aspirin, caffeine, ibuprofen) by SMILES, in the `mol_id,smiles`
   format `vs_vina_pipeline.py`'s CSV path expects.
 
