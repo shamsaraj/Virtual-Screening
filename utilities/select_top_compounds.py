@@ -1,6 +1,7 @@
-#assumptions: name of the selected compounds in results.csv are the same as in D:/Project/MMP-2-vs-mol2.mdb 
+#assumptions: name of the selected compounds are in results.csv which is in D:/Project/MMP-2-vs-mol2.mdb 
 #files are in mol2 format and in D:/Project/MMP-2-vs-mol2.mdb
 import os
+import errno
 import fileinput
 
 def make_directory_if_not_exists(path):
