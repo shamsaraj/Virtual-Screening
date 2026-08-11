@@ -76,8 +76,32 @@ and a few simple SMILES) with its own walkthrough at `example/README.md`.
   priority (via `wmic ... setpriority`), to speed up docking or let it run
   in the background without slowing down other programs.
 
-## Requirements
+## Installing prerequisites
 
-Python 2.7, OpenBabel (`babel`/`obabel` on PATH), AutoDock Vina
-(`vina`/`vina.exe`), and MGLTools/AutoDockTools (`prepare_receptor4.py`,
-`prepare_ligand4.py`).
+None of these are bundled in this repo (see the licensing note in the
+CrossDocker README re: MGLTools specifically) — install each separately,
+then point the script's config variables at them:
+
+- **Python 2.7** — e.g. `conda create -n vina python=2.7` (also a
+  convenient place to install OpenBabel and Vina below into the same
+  environment). If it's not the `python` on your PATH, set `python_path`
+  to its directory (with a trailing slash, e.g. `"/home/you/miniconda3/envs/vina/bin/"`);
+  if it is on PATH, leave `python_path = ""`.
+- **OpenBabel** — `conda install -c conda-forge openbabel`, or
+  [openbabel.org](http://openbabel.org/wiki/Category:Installation). The
+  script calls `obabel` directly assuming it's on PATH — there's no
+  separate config variable for it, so make sure `obabel`/`babel` resolve
+  in whatever shell/environment you run the script from.
+- **AutoDock Vina** — [vina.scripps.edu](https://vina.scripps.edu/) or
+  the [AutoDock-Vina GitHub releases](https://github.com/ccsb-scripps/AutoDock-Vina/releases)
+  (older 1.1.x releases match this script's `vina --ligand ... --config
+  ... --out ...` CLI; newer 1.2.x is a superset and should also work).
+  Set `vina_path` to the directory containing the `vina`
+  executable (with a trailing slash), or `""` if it's on PATH.
+- **MGLTools/AutoDockTools** (`prepare_receptor4.py`, `prepare_ligand4.py`)
+  — [ccsb.scripps.edu/mgltools](https://ccsb.scripps.edu/mgltools/downloads/).
+  These are Python 2-only tools bundled inside an MGLTools install. Set
+  `script_path` to the `.../MGLToolsPckgs/AutoDockTools/Utilities24/`
+  subdirectory of wherever you installed it (with a trailing slash) — see
+  the two example values already commented in/out near the top of
+  `vs_vina_pipeline.py` for what this looks like on a real install.

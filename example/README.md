@@ -24,9 +24,10 @@ installed) — please verify it works before relying on it.
 
 ## Prerequisites
 
-Install separately (not bundled here — see the main README and the note
-on MGLTools licensing): Python 2.7, OpenBabel, AutoDock Vina, and
-MGLTools/AutoDockTools (`prepare_receptor4.py`, `prepare_ligand4.py`).
+Python 2.7, OpenBabel, AutoDock Vina, and MGLTools/AutoDockTools — none
+bundled here. See "Installing prerequisites" in the main README for
+where to get each one and exactly what to set `script_path`/`vina_path`/
+`python_path` to.
 
 ## Running it
 
