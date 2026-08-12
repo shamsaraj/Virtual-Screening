@@ -102,6 +102,16 @@ archived); moved here since this is what actually produces their input.
   filename via `babel`.
 - **`zinc15script.py`** — bulk-extracts and converts a downloaded ZINC15
   tranche (`.gz` → `.pdbqt`), organizing outputs by ZINC ID.
+- **`fix_ion_occupancy.py`** — walks a folder and replaces `0.000 Zn`/
+  `0.000 Ca` occupancy values with `2.000` in every file, in place (a
+  fix AutoDockTools-prepared receptors with those ions often need before
+  they'll dock correctly in Vina; moved from the standalone Utilities
+  repo since it belongs with the receptor-prep step here).
+- **`strip_pdbqt_root_torsdof_lines.py`** — removes `ROOT`/`TORSDOF`
+  lines from a receptor PDBQT file, in place (for treating it as rigid).
+- **`batch_convert_pdbqt_results.py`** — for each subdirectory of a
+  project folder, converts `results/*.pdbqt` to `.mol2` and re-exports
+  each molecule individually with `--title` set to its filename.
 - **`set_vina_priority_high.bat`** / **`set_vina_priority_low.bat`** —
   Windows only: set the running `vina.exe` process to high or idle CPU
   priority (via `wmic ... setpriority`), to speed up docking or let it run
