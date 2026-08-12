@@ -51,6 +51,34 @@ environment.
 and a few simple SMILES) that the script points at out of the box — see
 `example/README.md` for the walkthrough.
 
+## Evaluating against a benchmark (optional)
+
+Before trusting the pipeline on a real prospective screen, it's worth
+validating it against a benchmark set of *known* actives and decoys for a
+similar target, to see how well the docking scores actually separate
+them. `evaluation/` has the tools for that, run after `results.csv` from
+a benchmark run:
+
+1. `python evaluation/split_results_for_roc.py results.csv
+   known_actives.txt actives.csv decoys.csv` -- `known_actives.txt` is
+   one active compound name per line (matching the `name` column of
+   `results.csv`); everything else in `results.csv` is treated as a
+   decoy. Converts to the semicolon-separated format the R scripts below
+   expect.
+2. `evaluation/roc_curve_enrichment.R` (R, needs the `ROCR` and
+   `enrichvs` packages) -- edit `working_dir`/`actives_file`/
+   `decoys_file`/`header` at the top (`header` names the score column(s)
+   to evaluate, e.g. `c("energy")` -- not the `name` id column), then
+   source it. Computes AUC and enrichment factors (EF at
+   100%/20%/10%/2%/1%/0.2%/0.1%) and plots a ROC curve per score column.
+3. `evaluation/roc_curve_multi_target.R` -- the same idea across several
+   targets at once, overlaid on one ROC plot; edit the `targets` list at
+   the top.
+
+These two R scripts were originally a separate repo
+([Visualisation](https://github.com/shamsaraj/Visualisation), now
+archived); moved here since this is what actually produces their input.
+
 ## Other scripts
 
 - **`parallel_autodock_vs.py`** — a separate pipeline using **AutoDock4**
